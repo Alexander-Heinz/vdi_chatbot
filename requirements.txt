@@ -6,3 +6,5 @@ openai
 numpy==1.24.1
 elasticsearch==8.4.3 
 langdetect==1.0.9
+selenium==4.24.0
+beautifulsoup4==4.12.3
