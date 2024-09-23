@@ -1,7 +1,10 @@
 
 scrape_debug.py
 .env
-.bin
+*.bin
 ground-truth-data.csv
 .DS_Store
 debugging_screenshots
+*.csv
+*.png
+*.pyc

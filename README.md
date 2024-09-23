@@ -3,8 +3,14 @@ a chatbot for VDI
 
 
 NEXT STEPS:
-- Retrieval evaluation
-- RAG evaluation
+- Retrieval evaluation (ok)
+- RAG evaluation (ok)
+- Create streamlit UI
+- Monitoring 
+- Ingestion
+- Containerizing (Docker)
+    - make app run on local browser using only docker-compose
+
 
 TODO: 2 points: Multiple retrieval approaches are evaluated, and the best one is used
 
@@ -55,4 +61,10 @@ Steps:
 
 
 - Retrieval evaluation
-    - for each record in the FAW, generate 5 questions. Next
+    - for each record (Answer) in the FAQ, generate 5 questions which possibly address this answer. 
+    - Next, we input the questions into our search function to see if the desired answer would actually be among our top results
+    - Use scoring algorithms to get an objective measure of retrieval quality
+    - Problem: We did not verify that the questions are actually valid, since we created the "ground truth" using an LLM.
+
+- Offline evaluation: LLM as a judge 
+
