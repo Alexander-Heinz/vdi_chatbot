@@ -3,8 +3,8 @@ a chatbot for VDI
 
 
 NEXT STEPS:
-- Retrieval evaluation (ok)
-- RAG evaluation (ok)
+- Retrieval evaluation (ok) DOCUMENT!!!
+- RAG evaluation (ok) DOCUMENT!!!
 - Create streamlit UI
 - Monitoring 
 - Ingestion

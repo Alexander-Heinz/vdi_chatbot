@@ -1,19 +1,9 @@
 import streamlit as st
 import time
-# from faq_chatbot import answer_question  # Import your chatbot function
-
-
-### CHATBOT FUNCTIONS
-from elasticsearch import Elasticsearch, helpers
-
-# Initialize Elasticsearch client
-es = Elasticsearch("http://localhost:9200")
-
-
-
+from app import answer_question, detect_language  # Import your chatbot functions
 
 # Set page configuration
-st.set_page_config(page_title="Multilingual FAQ Chatbot", page_icon="🤖", layout="centered")
+st.set_page_config(page_title="VDI-VDE-IT FAQ Chatbot", page_icon="🤖", layout="centered")
 
 # Custom CSS to improve the UI
 st.markdown("""
@@ -63,29 +53,31 @@ def display_chat_message(role, content):
             if role == "user":
                 st.image("https://api.dicebear.com/6.x/initials/svg?seed=JD", width=64)
             else:
-                st.image("https://api.dicebear.com/6.x/bottts/svg?seed=Bob", width=64)
+                st.image("https://api.dicebear.com/6.x/bottts/svg?seed=VDI", width=64)
         
         with col2:
             st.markdown(f"**{role.capitalize()}:** {content}")
 
-st.title("🤖 Multilingual FAQ Chatbot")
+st.title("🤖 VDI-VDE-IT Innovationsberatung Chatbot")
 
 st.markdown("""
-This chatbot can answer your questions in multiple languages. 
-It will automatically detect the language you're using and respond accordingly.
+Willkommen beim FAQ-Chatbot der VDI-VDE Innovation + Technik GmbH. 
+Hier können Sie Fragen zu unseren Innovationsberatungsleistungen und Förderprogrammen stellen.
+
+*Sie können Ihre Fragen auch in anderen Sprachen stellen. Der Chatbot erkennt die Sprache automatisch und antwortet entsprechend.*
 """)
 
 # Input field for user question
-user_question = st.text_input("Ask your question here:", key="user_input")
+user_question = st.text_input("Stellen Sie hier Ihre Frage:", key="user_input")
 
 # Button to submit question
-if st.button("Ask"):
+if st.button("Frage stellen"):
     if user_question:
         # Add user question to chat history
         st.session_state['chat_history'].append(("user", user_question))
         
         # Display "Thinking..." message
-        with st.spinner("Thinking..."):
+        with st.spinner("Verarbeite Anfrage..."):
             # Get chatbot response
             response = answer_question(user_question)
             time.sleep(1)  # Simulate processing time
@@ -93,23 +85,33 @@ if st.button("Ask"):
         # Add chatbot response to chat history
         st.session_state['chat_history'].append(("bot", response))
     else:
-        st.warning("Please enter a question.")
+        st.warning("Bitte geben Sie eine Frage ein.")
 
 # Display chat history
-st.subheader("Chat History")
+st.subheader("Gesprächsverlauf")
 for role, content in st.session_state['chat_history']:
     display_chat_message(role, content)
 
 # Language detection info
 if user_question:
     detected_lang = detect_language(user_question)
-    st.info(f"Detected language: {detected_lang}")
+    lang_names = {
+        'de': 'Deutsch',
+        'en': 'Englisch',
+        'fr': 'Französisch',
+        'es': 'Spanisch',
+        'it': 'Italienisch'
+        # Add more languages as needed
+    }
+    lang_name = lang_names.get(detected_lang, detected_lang)
+    st.info(f"Erkannte Sprache: {lang_name}")
 
 # Add a clear chat history button
-if st.button("Clear Chat History"):
+if st.button("Gesprächsverlauf löschen"):
     st.session_state['chat_history'] = []
     st.experimental_rerun()
 
 # Footer
 st.markdown("---")
-st.markdown("Powered by OpenAI GPT and Elasticsearch")
+st.markdown("Powered by VDI-VDE Innovation + Technik GmbH")
+st.markdown("*Dieser Chatbot verwendet KI-Technologie zur Beantwortung Ihrer Fragen.*")
