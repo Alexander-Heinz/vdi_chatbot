@@ -63,23 +63,28 @@ def parse_faq_page(html, category_name):
     soup = BeautifulSoup(html, 'html.parser')
     faqs = []
 
-    # Find all question and answer elements based on the updated structure
+    # Find all question and answer elements
     question_elements = soup.select('h3.card__title.publication__title span')
     answer_elements = soup.select('div.card__content > div')
+    link_elements = soup.select('a.card__link')  # Select the <a> tags to get the URLs
 
-    for question, answer in zip(question_elements, answer_elements):
+    for question, answer, link in zip(question_elements, answer_elements, link_elements):
         question_text = question.get_text(strip=True)
         answer_html = str(answer)
-        
+
+        # Get the URL from the href attribute
+        question_url = link['href']
+        question_url = f"https://vdivde-it.de{question_url}"  # Complete the URL
+
         if answer.get_text(strip=True).endswith('…'):
-            # If the answer ends with '…', click to get the full answer
+        # If the answer ends with '…', click to get the full answer
             full_answer = click_and_get_full_answer(driver, driver.find_element(By.XPATH, f"//span[contains(text(), '{question_text}')]"))
             if full_answer:
                 answer_html = full_answer
-        
+
         answer_text = process_text_with_links(answer_html)
-        faqs.append((category_name, question_text, answer_text))
-    
+        faqs.append((category_name, question_text, answer_text, question_url))
+
     return faqs
 
 def get_category_name(html, field_faq_categories):
@@ -91,18 +96,29 @@ def get_category_name(html, field_faq_categories):
     return "Unknown Category"
 
 def save_to_csv(data, filename):
-    df = pd.DataFrame(data, columns=['Category', 'Question', 'Answer'])
+    df = pd.DataFrame(data, columns=['Category', 'Question', 'Answer', 'URL'])
     df.to_csv(filename, index=False, encoding='utf-8')
 
 def save_to_json(data, filename):
+    # Create a list of dictionaries with column names as keys
+    json_data = []
+    for entry in data:
+        json_data.append({
+            'Category': entry[0],
+            'Question': entry[1],
+            'Answer': entry[2],
+            'URL': entry[3]
+        })
+
     with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        json.dump(json_data, f, ensure_ascii=False, indent=4)
+
 
 def main():
     all_faqs = []
     search_api_fulltext = "" 
 
-    for field_faq_categories in range(102, 139):
+    for field_faq_categories in range(102, 103):
         page_number = 0
 
         while True:

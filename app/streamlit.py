@@ -41,9 +41,16 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state for chat history
+# Initialize session state for chat history and submit flag
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
+
+if 'submit' not in st.session_state:
+    st.session_state['submit'] = False
+
+# Define a callback function to set submit flag to True
+def submit_question():
+    st.session_state['submit'] = True
 
 def display_chat_message(role, content):
     with st.container():
@@ -51,9 +58,9 @@ def display_chat_message(role, content):
         
         with col1:
             if role == "user":
-                st.image("https://api.dicebear.com/6.x/initials/svg?seed=JD", width=64)
+                st.image("https://api.dicebear.com/6.x/initials/svg?seed=JD", width=64)  # User avatar image
             else:
-                st.image("https://api.dicebear.com/6.x/bottts/svg?seed=VDI", width=64)
+                st.image("https://api.dicebear.com/6.x/bottts/svg?seed=VDI", width=64)  # Bot avatar image
         
         with col2:
             st.markdown(f"**{role.capitalize()}:** {content}")
@@ -67,11 +74,15 @@ Hier können Sie Fragen zu unseren Innovationsberatungsleistungen und Förderpro
 *Sie können Ihre Fragen auch in anderen Sprachen stellen. Der Chatbot erkennt die Sprache automatisch und antwortet entsprechend.*
 """)
 
-# Input field for user question
-user_question = st.text_input("Stellen Sie hier Ihre Frage:", key="user_input")
+# Input field for user question with on_change set to submit_question callback
+user_question = st.text_input("Stellen Sie hier Ihre Frage:", key="user_input", on_change=submit_question)
 
-# Button to submit question
-if st.button("Frage stellen"):
+# Check if the "Frage stellen" button was clicked or if the enter key was pressed
+submit_clicked = st.button("Frage stellen")
+
+# Automatically submit question when "Enter" is pressed or button is clicked
+if submit_clicked or st.session_state['submit']:
+    st.session_state['submit'] = False  # Reset the submit flag after submission
     if user_question:
         # Add user question to chat history
         st.session_state['chat_history'].append(("user", user_question))

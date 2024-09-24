@@ -46,19 +46,38 @@ Clone this repository and follow the setup instructions to deploy the chatbot lo
 
 ![alt text](image.png)
 
-Steps:
+Steps taken:
 
-- Scrape relevant documents: FAQ with section names
+### Scrape relevant documents: FAQ with section names
+In the first step, I looked for a way to scrape the FAQ documents on https://www.vdivde-it.de/de/faq. I used the search function via the dropdown menu to search for all questions in a specific category, in order to scrape them. Main Challenges were:
+    - Content was loaded via JavaScript, so selenium was needed for scraping
+    - Making my script click on an element if the answer was not fully visible, in order to see the full answer, and then navigate back
+In the end, I managed to scrape the FAQ Questions among with their respective answers and categories. (todo) I also added a link to the specific question, so the chatbot can give references to the FAQ webpage.
 
-- Index documents
-    - simple indexing using ElasticSearch
-    - advanced indexing using Vector Embeddings (sentence embeddings)
+### Indexing documents
+    As a next step, the scraped documents were "indexed" via ElasticSearch. Elasticsearch is a tool that helps users quickly search through large amounts of data, like documents or records, and find exactly what they need. It’s like a supercharged search engine that makes it easy to get answers fast, even from big and complex information sources. Indexing in Elasticsearch is like creating an organized catalog for a library. When you add data to Elasticsearch, it breaks it down into searchable parts and stores it in a structured way (the "index"). This makes it easy and fast to find specific information later, just like looking up a book by its title or topic in a library catalog.
+
+#### Simple indexing using ElasticSearch
+    Text indexing in Elasticsearch works like a traditional search engine. It breaks down text into individual words (tokens), stores them in a structured way, and matches them with search queries based on exact word matches or close similarities. It's great for finding specific terms or phrases in documents.
+
+#### advanced indexing using Vector Embeddings (sentence embeddings)
+    Vector (embedding-based) indexing, on the other hand, uses machine learning to represent text as numerical vectors (embeddings) that capture the meaning of the content. Instead of matching exact words, it measures how close the meaning of the query is to the meaning of the indexed text. This method is more flexible and effective for finding related or contextually similar information, even if the exact words don’t match.
+
+
+### Evaluating Retrieval
+As a baseline, retrieval from text-based search was evaluated using hit rate and MRR.
+**Hit rate** is like a success score. It tells how often the chatbot finds a relevant answer from the FAQs when a user asks a question. A higher hit rate means the chatbot is doing a good job of retrieving the right answers.
+
+**MRR (Mean Reciprocal Rank)** is a way to measure not just if the chatbot found a correct answer based on a user query, but also how much "on top" the correct answer was ranked. In my case, MRR (Mean Reciprocal Rank) measures how well the chatbot retrieves the right answers from the FAQs based on alternative ways of asking the same question. After generating similar questions, the chatbot searches for the best matches in our documents using ElasticSearch, and the top 5 results are ranked. MRR checks how high the correct document (question-answer-pair which the "alternative question" was based on) appears in those rankings—the sooner it shows up (like in the first or second position), the better the score. This way, you can tell how effectively the chatbot finds the right information, even with different ways of asking the question.
+
+
+
+
 
 - Store embeddings in Vector Database (TODO)
 
 - Create a search function for searching relevant documents based on queries: Relevant _FAQ Questions_ in relevant _Categories_ based on _user queries_ (Questions asked by users)
     - use ElasticSearch / Vector Search for sentence similiarity
-
 
 - Retrieval evaluation
     - for each record (Answer) in the FAQ, generate 5 questions which possibly address this answer. 
