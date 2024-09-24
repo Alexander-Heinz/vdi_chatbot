@@ -19,6 +19,47 @@ driver = webdriver.Chrome(service=service, options=chrome_options)
 BASE_URL = 'https://vdivde-it.de/de/faq/suche/'
 START_PARAMS = '101+100+102+103+106+107+108+109+110+111+113+114+115+118+119+120+121+123+124+125+126+129+130+131+133+134+135'
 
+# Define the category hierarchy with corresponding option values as keys
+category_hierarchy = {
+    "100": "General/other",
+    "101": "Basisinformationen",
+    "102": "Basisinformationen",
+    "103": "Basisinformationen",
+    "104": "Antragstellung",
+    "105": "Antragstellung",
+    "106": "Antragstellung",
+    "107": "Antragstellung",
+    "108": "Antragstellung",
+    "109": "Antragstellung",
+    "110": "Antragstellung",
+    "111": "Antragstellung",
+    "112": "Antragstellung",
+    "113": "Antragstellung",
+    "114": "Antragstellung",
+    "115": "Antragstellung",
+    "116": "Projektablauf",
+    "117": "Projektablauf",
+    "118": "Projektablauf",
+    "119": "Projektablauf",
+    "120": "Projektablauf",
+    "121": "Projektablauf",
+    "122": "Projektablauf",
+    "123": "Projektablauf",
+    "124": "Projektablauf",
+    "125": "Projektablauf",
+    "126": "Projektablauf",
+    "127": "Verwendungsnachweis",
+    "128": "Verwendungsnachweis",
+    "129": "Verwendungsnachweis",
+    "130": "Verwendungsnachweis",
+    "131": "Verwendungsnachweis",
+    "132": "Verwendungsnachweis",
+    "133": "Verwendungsnachweis",
+    "134": "Verwendungsnachweis",
+    "135": "Verwendungsnachweis",
+}
+
+
 def get_page(url):
     driver.get(url)
     time.sleep(2)  # Wait for JavaScript to load the content
@@ -59,7 +100,7 @@ def process_text_with_links(html_content):
     text = text.replace(' .', '.').replace(' ,', ',')
     return text#soup.get_text(strip=False)
 
-def parse_faq_page(html, category_name):
+def parse_faq_page(html, category_name, subcategory_name):
     soup = BeautifulSoup(html, 'html.parser')
     faqs = []
 
@@ -83,7 +124,7 @@ def parse_faq_page(html, category_name):
                 answer_html = full_answer
 
         answer_text = process_text_with_links(answer_html)
-        faqs.append((category_name, question_text, answer_text, question_url))
+        faqs.append((category_name, subcategory_name, question_text, answer_text, question_url))
 
     return faqs
 
@@ -92,11 +133,17 @@ def get_category_name(html, field_faq_categories):
     # Find the option tag where value matches the category number
     option_tag = soup.find('option', {'value': field_faq_categories})
     if option_tag:
-        return option_tag.get_text(strip=True)
+        category_name = option_tag.get_text(strip=True)
+        return category_name.lstrip('- ')  # Remove leading dashes and spaces
     return "Unknown Category"
 
+def get_hierarchical_category_name(field_faq_categories):
+    # Look up the hierarchical structure in the dictionary
+    return category_hierarchy.get(field_faq_categories, "Unknown Hierarchical Category")
+
+
 def save_to_csv(data, filename):
-    df = pd.DataFrame(data, columns=['Category', 'Question', 'Answer', 'URL'])
+    df = pd.DataFrame(data, columns=["Category", 'Subcategory', 'Question', 'Answer', 'URL'])
     df.to_csv(filename, index=False, encoding='utf-8')
 
 def save_to_json(data, filename):
@@ -104,10 +151,11 @@ def save_to_json(data, filename):
     json_data = []
     for entry in data:
         json_data.append({
-            'Category': entry[0],
-            'Question': entry[1],
-            'Answer': entry[2],
-            'URL': entry[3]
+            "Category": entry[0],
+            'Subcategory': entry[1],
+            'Question': entry[2],
+            'Answer': entry[3],
+            'URL': entry[4]
         })
 
     with open(filename, 'w', encoding='utf-8') as f:
@@ -118,7 +166,7 @@ def main():
     all_faqs = []
     search_api_fulltext = "" 
 
-    for field_faq_categories in range(102, 103):
+    for field_faq_categories in range(100, 137):
         page_number = 0
 
         while True:
@@ -128,10 +176,11 @@ def main():
             html = get_page(url)
             # Get category name only on the first page of each category
             if page_number == 0:
-                category_name = get_category_name(html, str(field_faq_categories))
-                print(f"Category name: {category_name}")
+                subcategory_name = get_category_name(html, str(field_faq_categories))
+                category_name = get_hierarchical_category_name(str(field_faq_categories))
+                print(f"Category Name {category_name}, Subcategory name: {subcategory_name}")
 
-            faqs = parse_faq_page(html, category_name)
+            faqs = parse_faq_page(html, category_name, subcategory_name)
             if not faqs:
                 break
             all_faqs.extend(faqs)

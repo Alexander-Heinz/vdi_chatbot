@@ -64,6 +64,9 @@ In the end, I managed to scrape the FAQ Questions among with their respective an
     Vector (embedding-based) indexing, on the other hand, uses machine learning to represent text as numerical vectors (embeddings) that capture the meaning of the content. Instead of matching exact words, it measures how close the meaning of the query is to the meaning of the indexed text. This method is more flexible and effective for finding related or contextually similar information, even if the exact words don’t match.
 
 
+### Create Ground Truth data
+To evaluate retrieval, we need some "ground truth" that we base our scores on. 
+
 ### Evaluating Retrieval
 As a baseline, retrieval from text-based search was evaluated using hit rate and MRR.
 **Hit rate** is like a success score. It tells how often the chatbot finds a relevant answer from the FAQs when a user asks a question. A higher hit rate means the chatbot is doing a good job of retrieving the right answers.
