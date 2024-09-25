@@ -1,17 +1,18 @@
-FROM python:3.10-slim
+# Use a specific version of Python
+FROM python:3.10-slim AS base
 
+# Set the working directory
 WORKDIR /app
 
-COPY . /app
+# Copy requirements file
+COPY requirements.txt .
 
-COPY .env /app/.env
+# Install dependencies
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-RUN pip install --upgrade pip
+# Copy the rest of the app files
+COPY . .
 
-RUN pip install -r requirements.txt
-
-EXPOSE 8501
-
+# Command to run the application
 CMD ["bash", "-c", "python index_docs.py && streamlit run app.py --server.port=8501 --server.enableCORS=false"]
-
-# CMD ["streamlit", "run", "streamlit.py", "--server.port=8501", "--server.enableCORS=false"]

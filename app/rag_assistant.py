@@ -28,7 +28,7 @@ MODEL = "gpt-4o-mini"
 
 ELASTICSEARCH_HOST = os.getenv('ELASTICSEARCH_HOST', 'localhost')
 ELASTICSEARCH_PORT = os.getenv('ELASTICSEARCH_PORT', '9200')
-es = Elasticsearch([{'host': ELASTICSEARCH_HOST, 'port': ELASTICSEARCH_PORT}])
+es = Elasticsearch([{'host': ELASTICSEARCH_HOST, 'port': ELASTICSEARCH_PORT, 'scheme': 'http'}])
 
 
 def elastic_search_knn(vector, 

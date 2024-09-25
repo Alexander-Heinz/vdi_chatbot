@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from vdi_chatbot.app.rag_assistant import answer_question, detect_language
+from rag_assistant import answer_question, detect_language
 from db_operations import save_conversation, save_feedback
 
 # Set page configuration

@@ -1,6 +1,6 @@
 psycopg2-binary
 streamlit
-
+python-dotenv
 sentence_transformers==2.7.0
 openai
 numpy==1.24.1

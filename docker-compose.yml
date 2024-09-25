@@ -1,19 +1,27 @@
 services:
-  db:
+  postgres_db:
     image: postgres:13
     container_name: postgres_db
+    env_file:
+      - .env  # Load the .env file here
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+#     POSTGRES_HOST_AUTH_METHOD: trust # for debugging ONLY
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-  elasticsearch:
+  elasticsearch_app:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
-    container_name: elasticsearch
+    container_name: elasticsearch_app
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
@@ -22,17 +30,30 @@ services:
       - "9300:9300"
     volumes:
       - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 20s
+      timeout: 7s
+      retries: 5
 
-  streamlit:
-    build: .
+  streamlit_app:
+    build:
+      context: ./app
+    image: python:3.10-slim
     container_name: streamlit_app
     env_file:
       - .env
     ports:
       - "8501:8501"
+    volumes:
+      - ./app:/app  # Mount the app directory
+      - ./app/app_data:/app/app_data  # Mount the data directory
+    # command: bash -c "pip install --upgrade pip && pip install -r /app/requirements.txt && python /app/index_docs.py && streamlit run /app/app.py --server.port=8501 --server.enableCORS=false"
     depends_on:
-      - db
-      - elasticsearch
+      elasticsearch_app:
+        condition: service_healthy
+      postgres_db:
+        condition: service_healthy
 
 volumes:
   db_data:

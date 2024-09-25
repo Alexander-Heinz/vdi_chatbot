@@ -4,18 +4,40 @@ from dotenv import load_dotenv
 from elasticsearch import Elasticsearch, helpers
 from tqdm import tqdm
 import os
-
+import time
 # Load environment variables
 load_dotenv()
 
 # Initialize Elasticsearch client and model
-es_client = Elasticsearch(os.getenv('ELASTICSEARCH_URL', 'http://localhost:9200'))
+
+
+
+es_client = Elasticsearch(os.getenv('ELASTICSEARCH_URL', 'http://elasticsearch:9200')) # http://localhost:9200
+
+# Wait for Elasticsearch to be available
+for i in range(10):  # Try 10 times
+    try:
+        if es_client.ping():
+            print("Elasticsearch is available!")
+            break
+    except ConnectionError:
+        print("Elasticsearch is not available yet, waiting...")
+        time.sleep(5)  # Wait for 5 seconds before retrying
+else:
+    print("Could not connect to Elasticsearch after several attempts.")
+    exit(1)
+
+
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 INDEX_NAME = "faq_index"
+# Get the directory where the script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
+# Change the working directory to the script's directory
+os.chdir(script_dir)
 # Load the FAQ data
-documents = pd.read_json('../data/documents-with-ids.json')
+documents = pd.read_json('./app_data/documents-with-ids.json')
 documents = documents.to_dict(orient='records')
 
 # Check if the index exists, delete it to avoid conflicts
