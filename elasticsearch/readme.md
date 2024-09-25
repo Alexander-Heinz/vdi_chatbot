@@ -1,0 +1,1 @@
+This is a separate Docker Container for using only Elasticsearch, e.g., with the Jupyter Notebooks.

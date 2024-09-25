@@ -1,0 +1,14 @@
+/project-root
+│
+├── /app
+│   ├── app.py
+│   ├── db_operations.py
+│   ├── rag_assistant.py
+│   ├── index_docs.py
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── /data
+│   └── documents-with-ids.json
+│
+└── docker-compose.yml
