@@ -1,7 +1,9 @@
 import streamlit as st
 import time
+import uuid
 from rag_assistant import answer_question, detect_language
-from db_operations import save_conversation, save_feedback
+from db_operations import save_conversation, save_feedback, log_interaction
+
 
 # Set page configuration
 st.set_page_config(page_title="VDI-VDE-IT FAQ Chatbot", page_icon="🤖", layout="centered")
@@ -42,11 +44,16 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state for chat history and conversation IDs
+# Initialize session state for chat history, conversation IDs, and session ID
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 if 'conversation_ids' not in st.session_state:
     st.session_state['conversation_ids'] = []
+if 'session_id' not in st.session_state:
+    st.session_state['session_id'] = str(uuid.uuid4())
+if 'feedback_given' not in st.session_state:
+    st.session_state['feedback_given'] = set()
+
 
 def display_chat_message(role, content, conversation_id=None):
     with st.container():
@@ -63,8 +70,15 @@ def display_chat_message(role, content, conversation_id=None):
         
         if role == "bot" and conversation_id:
             with col3:
-                col3.button("👍", key=f"like_{conversation_id}", on_click=lambda: save_feedback(conversation_id, 1))
-                col3.button("👎", key=f"dislike_{conversation_id}", on_click=lambda: save_feedback(conversation_id, -1))
+                if conversation_id not in st.session_state['feedback_given']:
+                    col3.button("👍", key=f"like_{conversation_id}", on_click=lambda: give_feedback(conversation_id, 1))
+                    col3.button("👎", key=f"dislike_{conversation_id}", on_click=lambda: give_feedback(conversation_id, -1))
+                else:
+                    st.write("Feedback given")
+
+def give_feedback(conversation_id, feedback_value):
+    save_feedback(conversation_id, feedback_value)
+    st.session_state['feedback_given'].add(conversation_id)
 
 st.title("🤖 VDI-VDE-IT Innovationsberatung Chatbot")
 
@@ -75,12 +89,18 @@ Hier können Sie Fragen zu unseren Innovationsberatungsleistungen und Förderpro
 *Sie können Ihre Fragen auch in anderen Sprachen stellen. Der Chatbot erkennt die Sprache automatisch und antwortet entsprechend.*
 """)
 
+log_interaction(st.session_state['session_id'], 'page_view')
+
+
 # Input field for user question
 user_question = st.text_input("Stellen Sie hier Ihre Frage:", key="user_input")
 
 # Button to submit question
 if st.button("Frage stellen"):
     if user_question:
+        # Log question submission
+        log_interaction(st.session_state['session_id'], 'question_submitted')
+        
         # Add user question to chat history
         st.session_state['chat_history'].append(("user", user_question))
         
@@ -90,12 +110,18 @@ if st.button("Frage stellen"):
             response = answer_question(user_question)
             time.sleep(1)  # Simulate processing time
         
+        # Detect language
+        detected_lang = detect_language(user_question)
+        
         # Save conversation to database and get conversation ID
-        conversation_id = save_conversation(user_question, response)
+        conversation_id = save_conversation(user_question, response, detected_lang, st.session_state['session_id'])
         st.session_state['conversation_ids'].append(conversation_id)
         
         # Add chatbot response to chat history
         st.session_state['chat_history'].append(("bot", response))
+        
+        # Log response generated
+        log_interaction(st.session_state['session_id'], 'response_generated')
     else:
         st.warning("Bitte geben Sie eine Frage ein.")
 
@@ -127,7 +153,11 @@ if user_question:
 if st.button("Gesprächsverlauf löschen"):
     st.session_state['chat_history'] = []
     st.session_state['conversation_ids'] = []
-    st.experimental_rerun()
+    st.session_state['feedback_given'] = set()
+
+
+
+
 
 # Footer
 st.markdown("---")

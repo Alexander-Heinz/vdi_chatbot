@@ -156,8 +156,8 @@ def answer_question(user_query, k=3):
         return translate(error_message, source_lang)
 
     # Step 3: Translate the query to German for search
-    if source_lang != 'de':
-        german_query = translate(sanitized_query, 'de')
+    if source_lang != 'German':
+        german_query = translate(sanitized_query, 'German')
     else:
         german_query = sanitized_query
 

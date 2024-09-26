@@ -34,7 +34,7 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
   - `./app/index_docs.py` indexes documents using ElasticSearch
 
 - **Monitoring**: TODO!!!
-- **Containerization**:
+- **Containerization**: docker-compose featuring Grafana, postgres database, streamlit app, ...
 
 
 ### How to Use:
