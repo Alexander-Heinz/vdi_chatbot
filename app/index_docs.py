@@ -12,7 +12,7 @@ load_dotenv()
 
 
 
-es_client = Elasticsearch(os.getenv('ELASTICSEARCH_URL', 'http://elasticsearch:9200')) # http://localhost:9200
+es_client = Elasticsearch(os.getenv('ELASTICSEARCH_URL', 'http://elasticsearch_app:9200')) # http://localhost:9200
 
 # Wait for Elasticsearch to be available
 for i in range(10):  # Try 10 times

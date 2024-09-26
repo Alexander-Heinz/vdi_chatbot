@@ -102,8 +102,13 @@ if st.button("Frage stellen"):
 # Display chat history
 st.subheader("Gesprächsverlauf")
 for i, (role, content) in enumerate(st.session_state['chat_history']):
-    conversation_id = st.session_state['conversation_ids'][i // 2] if role == "bot" else None
+    if 'conversation_ids' in st.session_state and len(st.session_state['conversation_ids']) > i // 2:
+        conversation_id = st.session_state['conversation_ids'][i // 2] if role == "bot" else None
+    else:
+        conversation_id = None  # Handle the case where there's no corresponding conversation ID
+    
     display_chat_message(role, content, conversation_id)
+
 
 # Language detection info
 if user_question:

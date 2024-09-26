@@ -62,7 +62,7 @@ def save_conversation(question, answer):
     
     cur.execute(
         "INSERT INTO conversations (id, question, answer) VALUES (%s, %s, %s)",
-        (conversation_id, question, answer)
+        (str(conversation_id), question, answer)
     )
     
     conn.commit()

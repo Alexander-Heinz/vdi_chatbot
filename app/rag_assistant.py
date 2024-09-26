@@ -24,11 +24,7 @@ INDEX_NAME = "faq_index"
 MODEL = "gpt-4o-mini"
 
 # Initialize Elasticsearch client
-# es_client = Elasticsearch("http://localhost:9200")
-
-ELASTICSEARCH_HOST = os.getenv('ELASTICSEARCH_HOST', 'localhost')
-ELASTICSEARCH_PORT = os.getenv('ELASTICSEARCH_PORT', '9200')
-es = Elasticsearch([{'host': ELASTICSEARCH_HOST, 'port': ELASTICSEARCH_PORT, 'scheme': 'http'}])
+es_client = Elasticsearch(os.getenv('ELASTICSEARCH_URL', 'http://elasticsearch_app:9200')) # http://localhost:9200
 
 
 def elastic_search_knn(vector, 
@@ -182,35 +178,3 @@ def answer_question(user_query, k=3):
     return answer
 
 
-
-# def llm(prompt, model_choice):
-#     start_time = time.time()
-#     if model_choice.startswith('ollama/'):
-#         response = ollama_client.chat.completions.create(
-#             model=model_choice.split('/')[-1],
-#             messages=[{"role": "user", "content": prompt}]
-#         )
-#         answer = response.choices[0].message.content
-#         tokens = {
-#             'prompt_tokens': response.usage.prompt_tokens,
-#             'completion_tokens': response.usage.completion_tokens,
-#             'total_tokens': response.usage.total_tokens
-#         }
-#     elif model_choice.startswith('openai/'):
-#         response = openai_client.chat.completions.create(
-#             model=model_choice.split('/')[-1],
-#             messages=[{"role": "user", "content": prompt}]
-#         )
-#         answer = response.choices[0].message.content
-#         tokens = {
-#             'prompt_tokens': response.usage.prompt_tokens,
-#             'completion_tokens': response.usage.completion_tokens,
-#             'total_tokens': response.usage.total_tokens
-#         }
-#     else:
-#         raise ValueError(f"Unknown model choice: {model_choice}")
-    
-#     end_time = time.time()
-#     response_time = end_time - start_time
-    
-#     return answer, tokens, response_time
