@@ -87,13 +87,20 @@ Willkommen beim FAQ-Chatbot der VDI-VDE Innovation + Technik GmbH.
 Hier können Sie Fragen zu unseren Innovationsberatungsleistungen und Förderprogrammen stellen.
 
 *Sie können Ihre Fragen auch in anderen Sprachen stellen. Der Chatbot erkennt die Sprache automatisch und antwortet entsprechend.*
+            
+---
+            
+Welcome to the FAQ chatbot of VDI-VDE Innovation + Technik GmbH. 
+Here you can ask questions about our innovation consulting services and funding programs.
+
+*You can also ask your questions in other languages. The chatbot automatically detects the language and responds accordingly.*
 """)
 
 log_interaction(st.session_state['session_id'], 'page_view')
 
 
 # Input field for user question
-user_question = st.text_input("Stellen Sie hier Ihre Frage:", key="user_input")
+user_question = st.text_input("Stellen Sie hier Ihre Frage / Insert question here:", key="user_input")
 
 # Button to submit question
 if st.button("Frage stellen"):
@@ -107,7 +114,7 @@ if st.button("Frage stellen"):
         # Display "Thinking..." message
         with st.spinner("Verarbeite Anfrage..."):
             # Get chatbot response
-            response = answer_question(user_question)
+            response = answer_question(user_question, st.session_state['session_id'])  
             time.sleep(1)  # Simulate processing time
         
         # Detect language

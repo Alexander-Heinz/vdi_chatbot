@@ -30,7 +30,10 @@ expected_schema = {
         'id': 'SERIAL PRIMARY KEY',
         'session_id': 'TEXT',
         'interaction_type': 'TEXT',
-        'created_at': 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
+        'created_at': 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
+        'prompt_tokens': 'INTEGER',
+        'completion_tokens': 'INTEGER',
+        'total_tokens': 'INTEGER'
     }
 }
 
@@ -158,18 +161,23 @@ def check_feedback_exists(conversation_id):
     
     return feedback_count > 0
 
-def log_interaction(session_id, interaction_type):
+def log_interaction(session_id, interaction_type, prompt_tokens=None, completion_tokens=None, total_tokens=None):
     conn = get_db_connection()
     cur = conn.cursor()
     
     cur.execute(
-        "INSERT INTO usage_stats (session_id, interaction_type) VALUES (%s, %s)",
-        (session_id, interaction_type)
+        """
+        INSERT INTO usage_stats 
+        (session_id, interaction_type, prompt_tokens, completion_tokens, total_tokens) 
+        VALUES (%s, %s, %s, %s, %s)
+        """,
+        (session_id, interaction_type, prompt_tokens, completion_tokens, total_tokens)
     )
     
     conn.commit()
     cur.close()
     conn.close()
+
 
 # Call this function when setting up your application
 create_tables()
