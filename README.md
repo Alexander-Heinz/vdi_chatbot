@@ -142,7 +142,7 @@ As a baseline, retrieval from text-based search was evaluated using hit rate and
   - Use scoring algorithms to get an objective measure of retrieval quality
   - Caveat: We did not verify that the questions are actually valid, since we created the "ground truth" using an LLM. So we also have a bias due to inaccurate ground truth data, and what we measure might also reflect these inaccuracies during ground truth creation.
 
-### Evaluating the RAG
+### 📊 Evaluating the RAG
 
 In this step, I generated answers based on the "ground truth" dataset, which consists of alternative ways of answering a question.
 
@@ -190,13 +190,13 @@ answer and provide your evaluation in parsable JSON without using code blocks:
   <figcaption><em>Evaluation in a chart</em></figcaption>
 </figure>
 
-### Monitoring
+### 📈 Monitoring
 
 The grafana dashboard is accessible under `localhost:3000`. The json file is to be found in `monitoring/grafana-dashboard.json`.
 
 
 
-### Next steps / future outlook
+### 🔮 Next steps / future outlook
 
 The project can further be refined by 
 - Improving prompts
