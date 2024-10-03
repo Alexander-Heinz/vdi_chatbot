@@ -21,18 +21,19 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
 ### Features:
 
 - **📚 Knowledge Base**: Question-Answer pairs, enhanced with Links & Categories. Built from VDI/VDE-IT's FAQs via web scraping.
-- **🔍 Retrieval evaluation**: Text and vector-based evaluation (ElasticSearch). Vector-based embeddings on questions, answers, and a combined approach, using a ground truth dataset consisting of alternative formulations of a question: Does the chatbot find the original question belonging to its alternative siblings in the retrieval process?
+- **🔍 Retrieval Evaluation**: Text and vector-based evaluation (ElasticSearch). Vector-based embeddings on questions, answers, and a combined approach, using a ground truth dataset consisting of alternative formulations of a question: Does the chatbot find the original question belonging to its alternative siblings in the retrieval process?
 - **🤖 RAG Evaluation**: The _answers_ given to the queries by the RAG were assessed based on the *ground truth* dataset: *Will the chatbot deliver relevant answers if alternative questions are being asked for the same problem?*
 - **💻 Interface**: Streamlit UI
-- **⚙️ Ingestion pipeline**:
-
-  - `./scrape.py` scrapes relevant data (IDs are created when generating ground truth dataset during evaluation)
+- **⚙️ Ingestion Pipeline**:
+  
+  - `./scrape.py` scrapes relevant data (IDs are created when generating the ground truth dataset during evaluation)
   - `./app/index_docs.py` indexes documents using ElasticSearch. This script is also executed when running `docker-compose`
-- **Monitoring**: Usage stats in postgres database; Grafana Dashboard
+  
+- **📊 Monitoring**: Usage stats in PostgreSQL database; Grafana Dashboard
 
 <figure>
   <img src="assets/20240927_191642_database-screenshot.png" alt="Monitoring data in the postgres database">
-  <figcaption><em>Monitoring data in the postgres database</em></figcaption>
+  <figcaption><em>Monitoring data in the PostgreSQL database</em></figcaption>
 </figure>
 
 <figure>
@@ -40,26 +41,30 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
   <figcaption><em>The Grafana Dashboard including Charts for monitoring system statistics</em></figcaption>
 </figure>
 
-- **Containerization**:
+- **📦 Containerization**:
+  
+  - Docker-compose featuring the following components:
+    - **🗄️ PostgreSQL Database** for storing monitoring usage data
+    - **🛠️ Adminer** for accessing the database tables
+    - **🔎 ElasticSearch** for indexing documents
+    - **🌐 Streamlit App** for a graphical user interface
 
-  - docker-compose featuring the following components:
-    - **postgres database** for storing monitoring usage data
-    - **adminer** for accessing the database tables
-    - **ElasticSearch** for indexing documents
-    - **Streamlit** App for a graphical user interface
-- Reproducibility:
-
+- **🔄 Reproducibility**:
+  
   - Instructions: See [How to use](#how-to-use)
   - Dataset: `documents_with_ids.json` inside `./data` and `./app/app_data` folder
-  - dependencies managed via `docker-compose` & `requirements.txt`
-- **Best Practices**:
-- Hybrid search 👍
-- Document re-ranking (not implemented)
-- user query rewriting (not implemented)
+  - Dependencies managed via `docker-compose` & `requirements.txt`
+  
+- **✅ Best Practices**:
+  
+  - Hybrid search 👍
+  - Document re-ranking (not implemented) ❌
+  - User query rewriting (not implemented) ❌
 
-Bonus
+**🌥️ Bonus**:
 
-- Cloud Deployment (not implemented)
+- Cloud Deployment (not implemented) ❌
+
 
 # How to Use:
 
@@ -97,7 +102,7 @@ database: postgres
 
 A more detailed description of the project & the single steps and challenges
 
-### Scrape relevant documents
+### 📝 Scrape relevant documents
 
 In the first step, I looked for a way to scrape the FAQ documents on `https://www.vdivde-it.de/de/faq`. I used the search function via the dropdown menu to search for all questions in a specific category, in order to scrape them. Main Challenges were:
 
@@ -106,7 +111,7 @@ In the first step, I looked for a way to scrape the FAQ documents on `https://ww
 
 In the end, I managed to scrape the FAQ Questions among with their respective answers and categories. I also added a link to the specific question, so the chatbot can give references to the FAQ webpage.
 
-### Indexing documents
+### 📂 Indexing documents
 
 As a next step, the scraped documents were "indexed" via ElasticSearch. Elasticsearch is a tool that helps users quickly search through large amounts of data, like documents or records, and find exactly what they need. It’s like a supercharged search engine that makes it easy to get answers fast, even from big and complex information sources. Indexing in Elasticsearch is like creating an organized catalog for a library. When you add data to Elasticsearch, it breaks it down into searchable parts and stores it in a structured way (the "index"). This makes it easy and fast to find specific information later, just like looking up a book by its title or topic in a library catalog.
 
@@ -118,11 +123,11 @@ Text indexing in Elasticsearch works like a traditional search engine. It breaks
 
 Vector (embedding-based) indexing, on the other hand, uses machine learning to represent text as numerical vectors (embeddings) that capture the meaning of the content. Instead of matching exact words, it measures how close the meaning of the query is to the meaning of the indexed text. This method is more flexible and effective for finding related or contextually similar information, even if the exact words don’t match.
 
-### Create Ground Truth data
+### ✅ Create Ground Truth data
 
 To evaluate retrieval & our query answers, we need some "ground truth" that we base our scores on. The ground truth consists of alternative questions that could be asked for the same answer.
 
-### Evaluating Retrieval
+### 📈 Evaluating Retrieval
 
 As a baseline, retrieval from text-based search was evaluated using hit rate and MRR.
 
