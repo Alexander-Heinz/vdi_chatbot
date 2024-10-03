@@ -6,9 +6,6 @@ ground-truth-data.csv
 .DS_Store
 debugging_screenshots
 *.csv
-*.png
 *.pyc
 *.mov
-*.gif
-*.jpg
 *.mp4
