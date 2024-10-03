@@ -30,7 +30,16 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
   - `./scrape.py` scrapes relevant data (IDs are created when generating the ground truth dataset during evaluation)
   - `./app/index_docs.py` indexes documents using ElasticSearch. This script is also executed when running `docker-compose`
   
-- **📊 Monitoring**: Usage stats in PostgreSQL database; Grafana Dashboard
+- **📊 Monitoring**: 
+  - Usage stats in PostgreSQL database
+  - Grafana Dashboard, featuring charts for...
+    - Interaction type count
+    - Queries by language
+    - Token usage over time
+    - Total tokens used by interaction type
+    - Queries per session
+    - Feedback (👍/👎) over time
+    - Share of interaction types
 
 <figure>
   <img src="assets/20240927_191642_database-screenshot.png" alt="Monitoring data in the postgres database">
