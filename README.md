@@ -4,10 +4,12 @@
 
 *Note: This project was created as the final project for [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp)*
 
+<br><br>
 <figure>
   <img src="assets/tutorial.gif" alt="Example usage of the chatbot">
   <figcaption><em>Example usage of the chatbot</em></figcaption>
 </figure>
+<br><br>
 
 ### Problem description
 
@@ -31,15 +33,17 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
   
 - **📊 Monitoring**: Usage stats in PostgreSQL database; Grafana Dashboard
 
+<br><br>
 <figure>
   <img src="assets/20240927_191642_database-screenshot.png" alt="Monitoring data in the postgres database">
-  <figcaption><em>Monitoring data in the PostgreSQL database</em></figcaption>
+  <figcaption><em>Fig. 1: Monitoring data in the PostgreSQL database</em></figcaption>
 </figure>
 
 <figure>
   <img src="assets/grafana-dashboard.png" alt="Evaluation in a chart">
-  <figcaption><em>The Grafana Dashboard including Charts for monitoring system statistics</em></figcaption>
+  <figcaption><em>Fig. 2: The Grafana Dashboard including Charts for monitoring system statistics</em></figcaption>
 </figure>
+<br><br>
 
 - **📦 Containerization**:
   
@@ -150,10 +154,12 @@ The goal was to see whether my RAG answers questions correctly if the questions 
 
 We can compare the given answers to our alternative questions with the original answers in our dataset by using cosine similarity
 
+<br><br>
 <figure>
   <img src="assets/cosine-evaluation.png" alt="Monitoring data in the postgres database">
-  <figcaption><em>Monitoring data in the postgres database</em></figcaption>
+  <figcaption><em>Fig. 3: Monitoring data in the postgres database</em></figcaption>
 </figure>
+<br><br>
 
 ...or by using LLM-as-a-judge:
 
@@ -179,16 +185,17 @@ answer and provide your evaluation in parsable JSON without using code blocks:
   "Explanation": "[Provide a brief explanation for your evaluation]"
 }}
 ```
-
+<br><br>
 <figure>
   <img src="assets/relevance.png" alt="Relevance of the given answers">
-  <figcaption><em>Relevance of the given answers</em></figcaption>
+  <figcaption><em>Fig. 4: Relevance of the given answers</em></figcaption>
 </figure>
 
 <figure>
   <img src="assets/evaluation.drawio.png" alt="Evaluation in a chart">
-  <figcaption><em>Evaluation in a chart</em></figcaption>
+  <figcaption><em>Fig. 5: Evaluation in a chart</em></figcaption>
 </figure>
+<br><br>
 
 ### 📈 Monitoring
 
