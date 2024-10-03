@@ -2,13 +2,10 @@
 
 *...a multilingual chatbot for [VDI-VDE/IT](https://vdivde-it.de/de)*
 
-
 <figure>
   <img src="assets/tutorial.gif" alt="Example usage of the chatbot">
   <figcaption><em>Example usage of the chatbot</em></figcaption>
 </figure>
-
-
 
 ### Problem description
 
@@ -18,9 +15,6 @@ The company has a [FAQ-Page](https://vdivde-it.de/de/faq) with frequently asked 
 This project implements a chatbot powered by LLM (Large Language Model) AI technology, specifically designed to assist users with questions related to administrative topics such as application submission, project duration, or support for BMBF funding. The chatbot uses a custom-built knowledge base, created by scraping the FAQ pages of the VDI/VDE-IT website, ensuring that the answers provided are accurate and relevant.
 
 While a simple FAQ page offers static responses, this chatbot dynamically interprets and responds to user queries, handling more complex and nuanced questions and answer patterns. It enhances the user experience by delivering fast, personalized answers, making it easier to access information about VDI/VDE-IT's projects and services, and specifically about the application process for BMBF funding.
-
-
-
 
 ### Features:
 
@@ -35,8 +29,13 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
 - **Monitoring**: Usage stats in postgres database; Grafana Dashboard
 
 <figure>
-  <img src="assets/20240927_191642_database-screenshot.png" alt="Monitoring data in the postgres database" width="50%">
+  <img src="assets/20240927_191642_database-screenshot.png" alt="Monitoring data in the postgres database">
   <figcaption><em>Monitoring data in the postgres database</em></figcaption>
+</figure>
+
+<figure>
+  <img src="assets/grafana-dashboard.png" alt="Evaluation in a chart">
+  <figcaption><em>Evaluation in a chart</em></figcaption>
 </figure>
 
 - **Containerization**:
@@ -60,7 +59,7 @@ Bonus
 
 - Cloud Deployment (not implemented)
 
-### How to Use:
+# How to Use:
 
 1. Install [Docker](https://docs.docker.com/engine/install/https:/), [Docker Compose](https://docs.docker.com/compose/install/) & [git](https://git-scm.com/downloads)
 2. Clone this repository to your local machine
@@ -78,6 +77,8 @@ Bonus
    ```
 4. Still in project root folder, run `docker-compose up` to build and run the app on your computer. This process can take some minutes and you'll be informed by the progress in terminal. As soon as you see `You can now view your Streamlit app in your browser` it should be done.
 5. `http://localhost:8501`  should open in your web browser
+
+---
 
 # Detailed description
 
@@ -162,14 +163,27 @@ answer and provide your evaluation in parsable JSON without using code blocks:
 ```
 
 <figure>
-  <img src="assets/relevance.png" alt="Relevance of the given answers" width="50%">
+  <img src="assets/relevance.png" alt="Relevance of the given answers">
   <figcaption><em>Relevance of the given answers</em></figcaption>
 </figure>
 
 <figure>
-  <img src="assets/evaluation.drawio.png" alt="Evaluation in a chart" width="50%">
+  <img src="assets/evaluation.drawio.png" alt="Evaluation in a chart">
   <figcaption><em>Evaluation in a chart</em></figcaption>
 </figure>
 
-
 ### Monitoring
+
+The grafana dashboard is accessible under `localhost:3300`. The json file is to be found in `monitoring/grafana-dashboard.json`.
+
+
+
+### Next steps / future outlook
+
+The project can further be refined by 
+- Improving prompts
+- Adding more to the question-answer knowledge base
+- Improving evaluation by "real" ground truth data or double-checking ground truth
+- Hosting in the cloud
+- Document re-ranking
+- user query rewriting (automatically re-writing user queries to more accessible queries for the RAG)

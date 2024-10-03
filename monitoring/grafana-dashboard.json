@@ -1,0 +1,979 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 8,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "default": true,
+          "type": "grafana-postgresql-datasource",
+          "uid": "cdz2jdy8g06bka"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 7,
+        "options": {
+          "displayMode": "lcd",
+          "maxVizHeight": 300,
+          "minVizHeight": 16,
+          "minVizWidth": 8,
+          "namePlacement": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true,
+          "sizing": "auto",
+          "valueMode": "color"
+        },
+        "pluginVersion": "11.2.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "cdz2jdy8g06bka"
+            },
+            "editorMode": "builder",
+            "format": "table",
+            "rawSql": "SELECT SUM(total_tokens), interaction_type FROM usage_stats WHERE total_tokens IS NOT NULL GROUP BY interaction_type ORDER BY SUM(total_tokens) DESC LIMIT 50 ",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "name": "SUM",
+                  "parameters": [
+                    {
+                      "name": "total_tokens",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "interaction_type",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "name": "interaction_type",
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50,
+              "orderBy": {
+                "property": {
+                  "name": "SUM(total_tokens)",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "orderByDirection": "DESC",
+              "whereJsonTree": {
+                "children1": [
+                  {
+                    "id": "a8a8bb8a-4567-489a-bcde-f192539b00d0",
+                    "properties": {
+                      "field": "total_tokens",
+                      "fieldSrc": "field",
+                      "operator": "is_not_null",
+                      "value": [],
+                      "valueSrc": [],
+                      "valueType": []
+                    },
+                    "type": "rule"
+                  }
+                ],
+                "id": "8aa9b99a-0123-4456-b89a-b19253673a9a",
+                "type": "group"
+              },
+              "whereString": "total_tokens IS NOT NULL"
+            },
+            "table": "usage_stats"
+          }
+        ],
+        "title": "Total Tokens by interaction type",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "default": true,
+          "type": "grafana-postgresql-datasource",
+          "uid": "cdz2jdy8g06bka"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "scheme",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "smooth",
+              "lineWidth": 3,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "id": 6,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "hidden",
+            "placement": "right",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "cdz2jdy8g06bka"
+            },
+            "editorMode": "builder",
+            "format": "table",
+            "rawSql": "SELECT total_tokens, created_at FROM usage_stats WHERE total_tokens IS NOT NULL LIMIT 50 ",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "total_tokens",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "created_at",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50,
+              "whereJsonTree": {
+                "children1": [
+                  {
+                    "id": "b9b8a9a9-cdef-4012-b456-719253980016",
+                    "properties": {
+                      "field": "total_tokens",
+                      "fieldSrc": "field",
+                      "operator": "is_not_null",
+                      "value": [],
+                      "valueSrc": [],
+                      "valueType": []
+                    },
+                    "type": "rule"
+                  }
+                ],
+                "id": "8aa9b99a-0123-4456-b89a-b19253673a9a",
+                "type": "group"
+              },
+              "whereString": "total_tokens IS NOT NULL"
+            },
+            "table": "usage_stats"
+          }
+        ],
+        "title": "Token usage over time",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "default": true,
+          "type": "grafana-postgresql-datasource",
+          "uid": "cdz2jdy8g06bka"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "id": 5,
+        "options": {
+          "displayLabels": [
+            "percent"
+          ],
+          "legend": {
+            "calcs": [],
+            "displayMode": "hidden",
+            "placement": "right",
+            "showLegend": false,
+            "values": []
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "cdz2jdy8g06bka"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT AVG(interaction_count) AS avg_int_ct, interaction_type\nFROM (\n    SELECT COUNT(interaction_type) AS interaction_count, interaction_type, session_id\n    FROM usage_stats\n    WHERE session_id IS NOT NULL\n    GROUP BY interaction_type, session_id\n) AS interaction_counts\nGROUP BY interaction_type\nLIMIT 50;",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "alias": "\"count\"",
+                  "name": "COUNT",
+                  "parameters": [
+                    {
+                      "name": "interaction_type",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "interaction_type",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "session_id",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "name": "interaction_type",
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                },
+                {
+                  "property": {
+                    "name": "session_id",
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50,
+              "whereJsonTree": {
+                "children1": [
+                  {
+                    "id": "a8aaba99-0123-4456-b89a-b19253923fa1",
+                    "properties": {
+                      "field": "session_id",
+                      "fieldSrc": "field",
+                      "operator": "is_not_null",
+                      "value": [],
+                      "valueSrc": [],
+                      "valueType": []
+                    },
+                    "type": "rule"
+                  }
+                ],
+                "id": "8aa9b99a-0123-4456-b89a-b19253673a9a",
+                "type": "group"
+              },
+              "whereString": "session_id IS NOT NULL"
+            },
+            "table": "usage_stats"
+          }
+        ],
+        "title": "Share of interaction types",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "default": true,
+          "type": "grafana-postgresql-datasource",
+          "uid": "cdz2jdy8g06bka"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 24
+        },
+        "id": 4,
+        "options": {
+          "displayMode": "basic",
+          "maxVizHeight": 300,
+          "minVizHeight": 16,
+          "minVizWidth": 8,
+          "namePlacement": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true,
+          "sizing": "auto",
+          "valueMode": "color"
+        },
+        "pluginVersion": "11.2.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "cdz2jdy8g06bka"
+            },
+            "editorMode": "builder",
+            "format": "table",
+            "rawSql": "SELECT interaction_type, COUNT(session_id) FROM usage_stats WHERE session_id IS NOT NULL GROUP BY interaction_type ORDER BY COUNT(session_id) DESC LIMIT 50 ",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "interaction_type",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "name": "COUNT",
+                  "parameters": [
+                    {
+                      "name": "session_id",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "name": "interaction_type",
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50,
+              "orderBy": {
+                "property": {
+                  "name": "COUNT(session_id)",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "orderByDirection": "DESC",
+              "whereJsonTree": {
+                "children1": [
+                  {
+                    "id": "b8bbb8ab-cdef-4012-b456-7192538ef31a",
+                    "properties": {
+                      "field": "session_id",
+                      "fieldSrc": "field",
+                      "operator": "is_not_null",
+                      "value": [],
+                      "valueSrc": [],
+                      "valueType": []
+                    },
+                    "type": "rule"
+                  }
+                ],
+                "id": "8aa9b99a-0123-4456-b89a-b19253673a9a",
+                "type": "group"
+              },
+              "whereString": "session_id IS NOT NULL"
+            },
+            "table": "usage_stats"
+          }
+        ],
+        "title": "Total Interactions",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "default": true,
+          "type": "grafana-postgresql-datasource",
+          "uid": "cdz2jdy8g06bka"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 32
+        },
+        "id": 3,
+        "options": {
+          "displayMode": "lcd",
+          "maxVizHeight": 300,
+          "minVizHeight": 16,
+          "minVizWidth": 8,
+          "namePlacement": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true,
+          "sizing": "auto",
+          "valueMode": "color"
+        },
+        "pluginVersion": "11.2.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "cdz2jdy8g06bka"
+            },
+            "editorMode": "builder",
+            "format": "table",
+            "rawSql": "SELECT session_id, COUNT(question) FROM conversations WHERE session_id IS NOT NULL GROUP BY session_id LIMIT 50 ",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "session_id",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "name": "COUNT",
+                  "parameters": [
+                    {
+                      "name": "question",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "name": "session_id",
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50,
+              "whereJsonTree": {
+                "children1": [
+                  {
+                    "id": "9a9aa9ba-cdef-4012-b456-7192538b9d88",
+                    "properties": {
+                      "field": "session_id",
+                      "fieldSrc": "field",
+                      "operator": "is_not_null",
+                      "value": [],
+                      "valueSrc": [],
+                      "valueType": []
+                    },
+                    "type": "rule"
+                  }
+                ],
+                "id": "8aa9b99a-0123-4456-b89a-b19253673a9a",
+                "type": "group"
+              },
+              "whereString": "session_id IS NOT NULL"
+            },
+            "table": "conversations"
+          }
+        ],
+        "title": "Queries per session-id",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "default": true,
+          "type": "grafana-postgresql-datasource",
+          "uid": "cdz2jdy8g06bka"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 40
+        },
+        "id": 2,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.97,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "right",
+            "showLegend": true
+          },
+          "orientation": "auto",
+          "showValue": "never",
+          "stacking": "none",
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          },
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 0
+        },
+        "pluginVersion": "11.2.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "cdz2jdy8g06bka"
+            },
+            "editorMode": "builder",
+            "format": "table",
+            "rawSql": "SELECT COUNT(*), language FROM conversations WHERE COALESCE(language, '') <> '' GROUP BY language LIMIT 50 ",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "name": "COUNT",
+                  "parameters": [
+                    {
+                      "name": "*",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "language",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "name": "language",
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50,
+              "whereJsonTree": {
+                "children1": [
+                  {
+                    "id": "9bbab8ab-cdef-4012-b456-71925374c77c",
+                    "properties": {
+                      "field": "language",
+                      "fieldSrc": "field",
+                      "operator": "is_not_empty",
+                      "value": [],
+                      "valueSrc": [],
+                      "valueType": []
+                    },
+                    "type": "rule"
+                  }
+                ],
+                "id": "8aa9b99a-0123-4456-b89a-b19253673a9a",
+                "type": "group"
+              },
+              "whereString": "COALESCE(language, '') <> ''"
+            },
+            "table": "conversations"
+          }
+        ],
+        "title": "Queries by language",
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "default": true,
+          "type": "grafana-postgresql-datasource",
+          "uid": "cdz2jdy8g06bka"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "bars",
+              "fillOpacity": 90,
+              "gradientMode": "scheme",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "log": 2,
+                "type": "symlog"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "line"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 48
+        },
+        "id": 1,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "hidden",
+            "placement": "right",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.2.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "cdz2jdy8g06bka"
+            },
+            "editorMode": "builder",
+            "format": "table",
+            "rawSql": "SELECT feedback, created_at FROM feedback LIMIT 50 ",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "feedback",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "created_at",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "feedback"
+          }
+        ],
+        "title": "Feedback over time",
+        "type": "timeseries"
+      }
+    ],
+    "refresh": "",
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "2024-10-03T15:54:44.807Z",
+      "to": "2024-10-03T16:48:05.838Z"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Chatbot Analytics",
+    "uid": "edzs0kbrqbgu8d",
+    "version": 2,
+    "weekStart": ""
+  }
