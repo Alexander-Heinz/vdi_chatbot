@@ -83,15 +83,15 @@ def give_feedback(conversation_id, feedback_value):
 st.title("🤖 VDI-VDE-IT Innovationsberatung Chatbot")
 
 st.markdown("""
-Willkommen beim FAQ-Chatbot der VDI-VDE Innovation + Technik GmbH. 
-Hier können Sie Fragen zu unseren Innovationsberatungsleistungen und Förderprogrammen stellen.
+Willkommen beim FAQ-Chatbot der VDI-VDE Innovation + Technik GmbH zu Fragen zu BMBF-Förderungen. 
+Hier können Sie Fragen zu unseren BMBF-Förderprogrammen und zur Antragstellung stellen.
 
 *Sie können Ihre Fragen auch in anderen Sprachen stellen. Der Chatbot erkennt die Sprache automatisch und antwortet entsprechend.*
             
 ---
             
-Welcome to the FAQ chatbot of VDI-VDE Innovation + Technik GmbH. 
-Here you can ask questions about our innovation consulting services and funding programs.
+Welcome to the FAQ chatbot of VDI-VDE Innovation + Technik GmbH regarding questions for BMBF-funding. 
+Here you can ask questions about our funding programs in the area of BMBF-funding.
 
 *You can also ask your questions in other languages. The chatbot automatically detects the language and responds accordingly.*
 """)
@@ -103,7 +103,7 @@ log_interaction(st.session_state['session_id'], 'page_view')
 user_question = st.text_input("Stellen Sie hier Ihre Frage / Insert question here:", key="user_input")
 
 # Button to submit question
-if st.button("Frage stellen"):
+if st.button("Frage stellen / Ask Question"):
     if user_question:
         # Log question submission
         log_interaction(st.session_state['session_id'], 'question_submitted')
@@ -133,7 +133,7 @@ if st.button("Frage stellen"):
         st.warning("Bitte geben Sie eine Frage ein.")
 
 # Display chat history
-st.subheader("Gesprächsverlauf")
+st.subheader("Gesprächsverlauf / Chat history")
 for i, (role, content) in enumerate(st.session_state['chat_history']):
     if 'conversation_ids' in st.session_state and len(st.session_state['conversation_ids']) > i // 2:
         conversation_id = st.session_state['conversation_ids'][i // 2] if role == "bot" else None
@@ -157,7 +157,7 @@ if user_question:
     st.info(f"Erkannte Sprache: {lang_name}")
 
 # Add a clear chat history button
-if st.button("Gesprächsverlauf löschen"):
+if st.button("Gesprächsverlauf löschen / delete history"):
     st.session_state['chat_history'] = []
     st.session_state['conversation_ids'] = []
     st.session_state['feedback_given'] = set()
@@ -170,3 +170,4 @@ if st.button("Gesprächsverlauf löschen"):
 st.markdown("---")
 st.markdown("Powered by VDI-VDE Innovation + Technik GmbH")
 st.markdown("*Dieser Chatbot verwendet KI-Technologie zur Beantwortung Ihrer Fragen.*")
+st.markdown("*This Chatbot uses AI technology to answer your questions.*")

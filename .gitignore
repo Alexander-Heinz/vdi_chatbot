@@ -8,3 +8,7 @@ debugging_screenshots
 *.csv
 *.png
 *.pyc
+*.mov
+*.gif
+*.jpg
+*.mp4
