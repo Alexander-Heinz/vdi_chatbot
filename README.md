@@ -1,6 +1,8 @@
 # 🤖 VDI-VDE/IT Chatbot
 
-*...a multilingual chatbot for [VDI-VDE/IT](https://vdivde-it.de/de)*
+**...a multilingual chatbot for [VDI-VDE/IT](https://vdivde-it.de/de)**
+
+*Note: This project was created as the final project for [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp)*
 
 <figure>
   <img src="assets/tutorial.gif" alt="Example usage of the chatbot">
@@ -35,7 +37,7 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
 
 <figure>
   <img src="assets/grafana-dashboard.png" alt="Evaluation in a chart">
-  <figcaption><em>Evaluation in a chart</em></figcaption>
+  <figcaption><em>The Grafana Dashboard including Charts for monitoring system statistics</em></figcaption>
 </figure>
 
 - **Containerization**:
@@ -77,6 +79,17 @@ Bonus
    ```
 4. Still in project root folder, run `docker-compose up` to build and run the app on your computer. This process can take some minutes and you'll be informed by the progress in terminal. As soon as you see `You can now view your Streamlit app in your browser` it should be done.
 5. `http://localhost:8501`  should open in your web browser
+
+- For grafana dashboard: The grafana dashboard is accessible under `localhost:3000`. The json file is to be found in `monitoring/grafana-dashboard.json`.
+- for database viewer (adminer): http://localhost:8080/ 
+use following credentials:
+```
+database system: postgreSQL
+server: postgres_db
+user: postgres
+password: dbPW2024!1
+database: postgres
+```
 
 ---
 
@@ -174,7 +187,7 @@ answer and provide your evaluation in parsable JSON without using code blocks:
 
 ### Monitoring
 
-The grafana dashboard is accessible under `localhost:3300`. The json file is to be found in `monitoring/grafana-dashboard.json`.
+The grafana dashboard is accessible under `localhost:3000`. The json file is to be found in `monitoring/grafana-dashboard.json`.
 
 
 
