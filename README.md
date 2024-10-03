@@ -48,7 +48,7 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
     - **Streamlit** App for a graphical user interface
 - Reproducibility:
 
-  - Instructions: See [How to use](#usage)
+  - Instructions: See [How to use](#how-to-use)
   - Dataset: `documents_with_ids.json` inside `./data` and `./app/app_data` folder
   - dependencies managed via `docker-compose` & `requirements.txt`
 - **Best Practices**:
@@ -60,7 +60,7 @@ Bonus
 
 - Cloud Deployment (not implemented)
 
-### How to Use {#usage}:
+### How to Use:
 
 1. Install [Docker](https://docs.docker.com/engine/install/https:/), [Docker Compose](https://docs.docker.com/compose/install/) & [git](https://git-scm.com/downloads)
 2. Clone this repository to your local machine
@@ -132,7 +132,7 @@ The goal was to see whether my RAG answers questions correctly if the questions 
 We can compare the given answers to our alternative questions with the original answers in our dataset by using cosine similarity
 
 <figure>
-  <img src="assets/cosine-evaluation.png" alt="Monitoring data in the postgres database" width="50%">
+  <img src="assets/cosine-evaluation.png" alt="Monitoring data in the postgres database">
   <figcaption><em>Monitoring data in the postgres database</em></figcaption>
 </figure>
 
