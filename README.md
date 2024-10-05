@@ -39,7 +39,6 @@ This way, instead of simply picking a pre-written answer, the chatbot can handle
 - **📚 Knowledge Base**: A well-organized collection of question-answer pairs, enhanced with links and categories, created from VDI/VDE-IT's FAQs through web scraping.
 - **🔍 User-Friendly Interface**: An intuitive Streamlit UI that makes it easy for users to interact with the chatbot and find relevant information.
 - **📊 Usage Monitoring**: Tracks statistics on user interactions, including types of queries, languages used, and feedback, to improve the user experience continually.
-- **⚙️ Background Data Processing**: Regularly scrapes relevant data and indexes it, ensuring accurate and timely responses to user queries.
 - **🔒 Contextual Answer Restriction**: Limits responses to the available information retrieved, ensuring answers remain relevant and contextually appropriate.
 
 
@@ -49,7 +48,7 @@ This way, instead of simply picking a pre-written answer, the chatbot can handle
 - **🤖 RAG Evaluation**: Evaluates the relevance of answers provided by the RAG system to alternative questions, ensuring appropriate responses to similar queries.
 - **⚙️ Ingestion Pipeline**:
 
-  - `./scrape.py`: Extracts relevant data from VDI-VDE/IT website.
+  - `./scrape.py`: Extracts relevant data from VDI-VDE/IT website by web-scraping algorithms.
   - `./app/index_docs.py`: Indexes documents in ElasticSearch, executed as part of the `docker-compose` process.
 - **📊 Monitoring**:
 
