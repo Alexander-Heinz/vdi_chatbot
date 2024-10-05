@@ -24,7 +24,7 @@ Implementing a Retrieval-Augmented Generation (RAG) chatbot for VDI/VDE-IT enhan
 
 Designed to assist with administrative queries related to BMBF funding, the chatbot interprets complex questions, providing fast, tailored responses that improve user experience and facilitate access to information. Unlike static FAQ pages, this RAG chatbot adapts to user needs, ultimately increasing efficiency and satisfaction in navigating VDI/VDE-IT’s services.
 
-## What is a RAG-Chatbot?
+### What is a RAG-Chatbot?
 
 A Retrieval-Augmented Generation (RAG) chatbot is a smart system that combines two powerful technologies to give more helpful and accurate answers.
 
