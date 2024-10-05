@@ -10,29 +10,43 @@
 </figure>
 <br><br>
 
-### Problem description
+## Problem description
 
-VDI/VDE-IT is a German institute that supports innovation in technology, engineering, and digital transformation, particularly focusing on research, policy, and technology transfer.
-The company has a [FAQ-Page](https://vdivde-it.de/de/faq) with frequently asked questions regarding project funding, and a rather static [chatbot](https://vdivde-it.de/de/chatbot-fuer-bmbf-projekte) which can already answer questions based on keywords and multiple-choice options and text search, but no real interactions.
+VDI/VDE-IT is a German institute that supports innovation in technology, engineering, and digital transformation, particularly focusing on research, policy, and technology by taking over "Projektträgerschaft". In Germany, a "Projektträger" is an intermediary organization that manages and oversees the administration, evaluation, and financial coordination of government-funded research and innovation projects on behalf of ministries or funding agencies. One example for the Projects can be financial grants provided by the German Federal Ministry of Education and Research (BMBF) to support research, development, and innovation projects across various fields, aiming to advance scientific knowledge, technological progress, and societal solutions.
 
-This project implements a chatbot powered by LLM (Large Language Model) AI technology, specifically designed to assist users with questions related to administrative topics such as application submission, project duration, or support for BMBF funding. The chatbot uses a custom-built knowledge base, created by scraping the FAQ pages of the VDI/VDE-IT website, ensuring that the answers provided are accurate and relevant.
+The process to apply for BMBF project funding ("Antragstellung") involves submitting a project proposal through the electronic submission portal, typically in two stages: first, a short outline ("Projektskizze") is reviewed, and if approved, a detailed application ("Antrag") is required. This includes providing project goals, budget plans, and cooperation agreements. The project is then evaluated for scientific and financial feasibility before final approval.
 
-While a simple FAQ page offers static responses, this chatbot dynamically interprets and responds to user queries, handling more complex and nuanced questions and answer patterns. It enhances the user experience by delivering fast, personalized answers, making it easier to access information about VDI/VDE-IT's projects and services, and specifically about the application process for BMBF funding.
+To ease this process, VDI-VDE/IT offers a [FAQ-Page](https://vdivde-it.de/de/faq) with frequently asked questions regarding project funding. Based on this FAQ, they also offer a [chatbot](https://vdivde-it.de/de/chatbot-fuer-bmbf-projekte) which can already answer questions by providing you documents from the FAQ-page that match your search query. However, this approach can feel cumbersome and static; improving user experience with personalized, natural responses instead of multiple-choice options would enhance engagement.
 
-### Features:
+### A RAG-Chatbot Delivers Precise, Relevant Answers Tailored to User Queries
 
-- **📚 Knowledge Base**: Question-Answer pairs, enhanced with Links & Categories. Built from VDI/VDE-IT's FAQs via web scraping.
-- **🔍 Retrieval Evaluation**: Text and vector-based evaluation (ElasticSearch). Vector-based embeddings on questions, answers, and a combined approach, using a ground truth dataset consisting of alternative formulations of a question: Does the chatbot find the original question belonging to its alternative siblings in the retrieval process?
-- **🤖 RAG Evaluation**: The _answers_ given to the queries by the RAG were assessed based on the *ground truth* dataset: *Will the chatbot deliver relevant answers if alternative questions are being asked for the same problem?*
-- **💻 Interface**: Streamlit UI
+Implementing a Retrieval-Augmented Generation (RAG) chatbot for VDI/VDE-IT enhances user support over the existing retrieval-based system. This innovative solution dynamically generates personalized responses by retrieving relevant documents from a custom knowledge base, ensuring accurate and contextually rich answers.
+
+Designed to assist with administrative queries related to BMBF funding, the chatbot interprets complex questions, providing fast, tailored responses that improve user experience and facilitate access to information. Unlike static FAQ pages, this RAG chatbot adapts to user needs, ultimately increasing efficiency and satisfaction in navigating VDI/VDE-IT’s services.
+
+## Features:
+
+### User experience Features
+
+- **📚 Knowledge Base**: A well-organized collection of question-answer pairs, enhanced with links and categories, created from VDI/VDE-IT's FAQs through web scraping.
+- **🔍 User-Friendly Interface**: An intuitive Streamlit UI that makes it easy for users to interact with the chatbot and find relevant information.
+- **📊 Usage Monitoring**: Tracks statistics on user interactions, including types of queries, languages used, and feedback, to improve the user experience continually.
+- **⚙️ Background Data Processing**: Regularly scrapes relevant data and indexes it, ensuring accurate and timely responses to user queries.
+- **🔒 Contextual Answer Restriction**: Limits responses to the available information retrieved, ensuring answers remain relevant and contextually appropriate.
+
+
+### Technical Features
+
+- **🔍 Retrieval Evaluation**: Utilizes text and vector-based methods in ElasticSearch, assessing the retrieval of original questions against alternative formulations from a ground truth dataset.
+- **🤖 RAG Evaluation**: Evaluates the relevance of answers provided by the RAG system to alternative questions, ensuring appropriate responses to similar queries.
 - **⚙️ Ingestion Pipeline**:
-  
-  - `./scrape.py` scrapes relevant data (IDs are created when generating the ground truth dataset during evaluation)
-  - `./app/index_docs.py` indexes documents using ElasticSearch. This script is also executed when running `docker-compose`
-  
-- **📊 Monitoring**: 
+
+  - `./scrape.py`: Extracts relevant data from VDI-VDE/IT website.
+  - `./app/index_docs.py`: Indexes documents in ElasticSearch, executed as part of the `docker-compose` process.
+- **📊 Monitoring**:
+
   - Usage stats in PostgreSQL database
-  - Grafana Dashboard, featuring charts for...
+  - Grafana Dashboard displaying:
     - Interaction type count
     - Queries by language
     - Token usage over time
@@ -41,34 +55,20 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
     - Feedback (👍/👎) over time
     - Share of interaction types
 
-<figure>
-  <img src="assets/20240927_191642_database-screenshot.png" alt="Monitoring data in the postgres database">
-  <figcaption><em>Fig. 1: Monitoring data in the PostgreSQL database</em></figcaption>
-</figure>
-<br><br>
-
-<figure>
-  <img src="assets/grafana-dashboard.png" alt="Evaluation in a chart">
-  <figcaption><em>Fig. 2: The Grafana Dashboard including Charts for monitoring system statistics</em></figcaption>
-</figure>
-<br><br>
-
 - **📦 Containerization**:
-  
+
   - Docker-compose featuring the following components:
     - **🗄️ PostgreSQL Database** for storing monitoring usage data
     - **🛠️ Adminer** for accessing the database tables
     - **🔎 ElasticSearch** for indexing documents
     - **🌐 Streamlit App** for a graphical user interface
-
 - **🔄 Reproducibility**:
-  
+
   - Instructions: See [How to use](#how-to-use)
   - Dataset: `documents_with_ids.json` inside `./data` and `./app/app_data` folder
   - Dependencies managed via `docker-compose` & `requirements.txt`
-  
 - **✅ Best Practices**:
-  
+
   - Hybrid search 👍
   - Document re-ranking (not implemented) ❌
   - User query rewriting (not implemented) ❌
@@ -76,7 +76,6 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
 **🌥️ Bonus**:
 
 - Cloud Deployment (not implemented) ❌
-
 
 # How to Use:
 
@@ -98,8 +97,9 @@ While a simple FAQ page offers static responses, this chatbot dynamically interp
 5. `http://localhost:8501`  should open in your web browser
 
 - For grafana dashboard: The grafana dashboard is accessible under `localhost:3000`. The json file is to be found in `monitoring/grafana-dashboard.json`.
-- for database viewer (adminer): http://localhost:8080/ 
-use following credentials:
+- for database viewer (adminer): http://localhost:8080/
+  use following credentials:
+
 ```
 database system: postgreSQL
 server: postgres_db
@@ -192,6 +192,7 @@ answer and provide your evaluation in parsable JSON without using code blocks:
   "Explanation": "[Provide a brief explanation for your evaluation]"
 }}
 ```
+
 <figure>
   <img src="assets/relevance.png" alt="Relevance of the given answers">
   <figcaption><em>Fig. 4: Relevance of the given answers</em></figcaption>
@@ -203,18 +204,31 @@ answer and provide your evaluation in parsable JSON without using code blocks:
 </figure>
 <br><br>
 
-### 📈 Monitoring
-
-The grafana dashboard is accessible under `localhost:3000`. The json file is to be found in `monitoring/grafana-dashboard.json`.
-
-
 
 ### 🔮 Next steps / future outlook
 
-The project can further be refined by 
+The project can further be refined by
+
 - Improving prompts
 - Adding more to the question-answer knowledge base
 - Improving evaluation by "real" ground truth data or double-checking ground truth
 - Hosting in the cloud
 - Document re-ranking
 - user query rewriting (automatically re-writing user queries to more accessible queries for the RAG)
+
+
+
+# Screenshots
+
+
+<figure>
+  <img src="assets/20240927_191642_database-screenshot.png" alt="Monitoring data in the postgres database">
+  <figcaption><em>Fig. 1: Monitoring data in the PostgreSQL database</em></figcaption>
+</figure>
+<br><br>
+
+<figure>
+  <img src="assets/grafana-dashboard.png" alt="Evaluation in a chart">
+  <figcaption><em>Fig. 2: The Grafana Dashboard including Charts for monitoring system statistics</em></figcaption>
+</figure>
+<br><br>
