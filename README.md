@@ -98,10 +98,11 @@ A Retrieval-Augmented Generation (RAG) chatbot is a smart system that combines t
    rm .env.dev
    nano .env
    ```
-4. Still in project root folder, run `docker-compose up` to build and run the app on your computer. This process can take some minutes and you'll be informed by the progress in terminal. As soon as you see `You can now view your Streamlit app in your browser` it should be done.
+4. Still in project root folder, run `docker-compose up --build` (or `sudo docker-compose up --build`) to build and run the app on your computer. This process can take some minutes and you'll be informed by the progress in terminal. As soon as you see `You can now view your Streamlit app in your browser` it should be done.
 5. `http://localhost:8501`  should open in your web browser
 
 - For grafana dashboard: The grafana dashboard is accessible under `localhost:3000`. The json file is to be found in `monitoring/grafana-dashboard.json`.
+  -  default password & username: `admin`
 - for database viewer (adminer): http://localhost:8080/
   use following credentials:
 
@@ -112,6 +113,7 @@ user: postgres
 password: dbPW2024!1
 database: postgres
 ```
+
 
 ---
 

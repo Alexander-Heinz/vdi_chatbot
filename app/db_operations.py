@@ -54,10 +54,14 @@ def update_table_schema(table_name, expected_columns):
     # Compare with expected columns and add any missing ones
     for column_name, column_definition in expected_columns.items():
         if column_name not in current_columns:
-            cur.execute(sql.SQL("""
-            ALTER TABLE {} 
-            ADD COLUMN {} {}
-            """).format(sql.Identifier(table_name), sql.Identifier(column_name), sql.SQL(column_definition)))
+            try:
+                cur.execute(sql.SQL("""
+                ALTER TABLE {} 
+                ADD COLUMN {} {}
+                """).format(sql.Identifier(table_name), sql.Identifier(column_name), sql.SQL(column_definition)))
+            except Exception as e:
+                print(f"Error altering table {table_name}: {e}")
+
     
     conn.commit()
     cur.close()
@@ -90,9 +94,12 @@ def create_tables():
             {}
         )
         """).format(sql.Identifier(table_name), sql.SQL(column_definitions))
-        
-        cur.execute(create_table_query)
-    
+        try:
+            cur.execute(create_table_query)
+            print(f"Table {table_name} created or already exists.")
+        except Exception as e:
+            print(f"Error creating table {table_name}: {e}")    
+            
     # Update the schema to add any missing columns
     for table_name, columns in expected_schema.items():
         update_table_schema(table_name, columns)
@@ -162,6 +169,7 @@ def check_feedback_exists(conversation_id):
     return feedback_count > 0
 
 def log_interaction(session_id, interaction_type, prompt_tokens=None, completion_tokens=None, total_tokens=None):
+    create_tables()
     conn = get_db_connection()
     cur = conn.cursor()
     
@@ -179,5 +187,3 @@ def log_interaction(session_id, interaction_type, prompt_tokens=None, completion
     conn.close()
 
 
-# Call this function when setting up your application
-create_tables()

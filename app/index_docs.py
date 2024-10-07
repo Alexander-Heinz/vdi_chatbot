@@ -10,12 +10,11 @@ load_dotenv()
 
 # Initialize Elasticsearch client and model
 
-
-
 es_client = Elasticsearch(os.getenv('ELASTICSEARCH_URL', 'http://elasticsearch_app:9200')) # http://localhost:9200
 
 # Wait for Elasticsearch to be available
 for i in range(10):  # Try 10 times
+    print("trying to connect to ElasticSearch...")
     try:
         if es_client.ping():
             print("Elasticsearch is available!")
@@ -31,13 +30,10 @@ else:
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 INDEX_NAME = "faq_index"
-# Get the directory where the script is located
-script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Change the working directory to the script's directory
-os.chdir(script_dir)
 # Load the FAQ data
 documents = pd.read_json('./app_data/documents-with-ids.json')
+print("loaded documents!")
 documents = documents.to_dict(orient='records')
 
 # Check if the index exists, delete it to avoid conflicts
